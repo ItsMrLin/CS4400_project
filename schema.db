@@ -1,0 +1,109 @@
+CREATE TABLE User (
+  Username VARCHAR(255) NOT NULL,
+  Password VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Username)
+);
+
+CREATE TABLE Staff (
+  Username VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Username),
+  FOREIGN KEY (Username) REFERENCES User (Username)
+);
+
+CREATE TABLE StudentFaculty (
+  Username   VARCHAR(255) NOT NULL,
+  Name       VARCHAR(255),
+  DOB        DATE,
+  Gender     BOOLEAN,
+  IsDebarred BOOLEAN DEFAULT FALSE,
+  Email      VARCHAR(255),
+  Address    VARCHAR(255),
+  IsFaculty  BOOLEAN,
+  Dept       VARCHAR(255),
+  Penalty    FLOAT,
+  PRIMARY KEY (Username),
+  FOREIGN KEY (Username) REFERENCES User (Username)
+);
+
+CREATE TABLE Floor (
+  FloorID     INT NOT NULL,
+  AssistCount INT NOT NULL DEFAULT 0,
+  CopierCount INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (FloorID)
+);
+
+
+CREATE TABLE Shelf (
+  ShelfID INT NOT NULL,
+  AisleID INT NOT NULL,
+  FloorID INT NOT NULL,
+  FOREIGN KEY (FloorID) REFERENCES Floor (FloorID),
+  PRIMARY KEY (ShelfID)
+);
+
+
+CREATE TABLE Subject (
+  Name         VARCHAR(255) NOT NULL,
+  JournalCount INT          NOT NULL DEFAULT 0,
+  FloorID      INT          NOT NULL,
+  FOREIGN KEY (FloorID) REFERENCES Floor (FloorID),
+  PRIMARY KEY (Name)
+);
+
+CREATE TABLE Keywords (
+  Name     VARCHAR(255) NOT NULL,
+  Keywords VARCHAR(255) NOT NULL,
+  PRIMARY KEY (Name),
+  FOREIGN KEY (Name) REFERENCES Subject (Name)
+);
+
+CREATE TABLE Book (
+  Title            VARCHAR(255),
+  Cost             FLOAT       NOT NULL,
+  ISBN             VARCHAR(13) NOT NULL,
+  IsReserved       BOOLEAN DEFAULT FALSE,
+  Edition          INT,
+  Publisher        VARCHAR(255),
+  PlaceOfPublisher VARCHAR(255),
+  CopyRightYear    INT,
+  SubName          VARCHAR(255),
+  ShelfID          INT,
+  PRIMARY KEY (ISBN),
+  FOREIGN KEY (SubName) REFERENCES Subject (Name),
+  FOREIGN KEY (ShelfID) REFERENCES Shelf (ShelfID)
+);
+
+
+CREATE TABLE Author (
+  ISBN   VARCHAR(13)  NOT NULL,
+  Author VARCHAR(255) NOT NULL,
+  PRIMARY KEY (ISBN, Author),
+  FOREIGN KEY (ISBN) REFERENCES Book (ISBN)
+);
+
+CREATE TABLE BookCopy (
+  ISBN            VARCHAR(13) NOT NULL,
+  CopyID          INT         NOT NULL,
+  IsOnHold        BOOLEAN DEFAULT FALSE,
+  IsCheckedOut    BOOLEAN DEFAULT FALSE,
+  IsDamaged       BOOLEAN DEFAULT FALSE,
+  FutureRequester VARCHAR(255),
+  FOREIGN KEY (ISBN) REFERENCES Book (ISBN),
+  FOREIGN KEY (FutureRequester) REFERENCES StudentFaculty (Username),
+  PRIMARY KEY (ISBN, CopyID)
+);
+
+CREATE TABLE Issue (
+  Username       VARCHAR(255) NOT NULL,
+  IssueID        INT          NOT NULL AUTO_INCREMENT,
+  IssueDate      DATE         NOT NULL,
+  ExtensionDate  DATE,
+  ReturnDate     DATE,
+  ExtensionCount INT          NOT NULL,
+  ISBN           VARCHAR(13)  NOT NULL,
+  CopyID         INT          NOT NULL,
+  FOREIGN KEY (ISBN, CopyID) REFERENCES BookCopy (ISBN, CopyID),
+  FOREIGN KEY (Username) REFERENCES StudentFaculty (Username),
+  PRIMARY KEY (IssueID)
+);
+

@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="resources/bower_components/semantic-ui/dist/semantic.min.css"/>
