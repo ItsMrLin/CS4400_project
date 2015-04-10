@@ -12,13 +12,11 @@ if (isset($_SESSION['username'])) {
 
         if ($password == $confirmPassword && $password != "") {
             $config = include("../resources/config.php");
-//            $mysqli = new mysqli($config['hostname'], $config['username'], $config['password'], $config['dbname'], $config['port']);
-              $mysqli = new mysqli('127.0.0.1', 'root', 'root', 'CS_4400', '8889');
+            $mysqli = new mysqli($config['hostname'], $config['username'], $config['password'], $config['dbname'], $config['port']);
             if ($mysqli->connect_error) {
-                echo "there was an error";
                 die($mysqli->connect_error);
             } else {
-                $mysqli->query("INSERT INTO User VALUES ($username, $password)");
+                $mysqli->query("INSERT INTO User VALUES ('$username', '$password')");
                 $mysqli->close();
                 header("Location:search-books.php");
             }

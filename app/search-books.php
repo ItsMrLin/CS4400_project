@@ -1,3 +1,10 @@
+<?php
+if (!isset($_SESSION['username'])) {
+    header("Location:login-register.php");
+    exit;
+}
+?>
+
 <?php require_once("../resources/templates/header.php"); ?>
 
 <div class="ui tall stacked segment">
