@@ -17,17 +17,14 @@
             <input type="text" name="author"/>
         </div>
     </form>
-    <div class="ui left labeled icon button">
+    <a href="login-register.php" class="ui left labeled icon button">
         <i class="left arrow icon"></i>
         Back
-    </div>
-    <div class="ui primary button">
+    </a>
+    <button class="ui primary button right floated">
         <i class="search icon"></i>
         Search
-    </div>
-    <div class="ui button">
-        Close
-    </div>
+    </button>
 </div>
 
 <?php require_once("../resources/templates/footer.php"); ?>
