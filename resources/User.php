@@ -4,8 +4,12 @@ class User {
     protected $username;
     protected $password;
 
-    public function login($username, $password) {
+    function User($username, $password) {
         $this->username = $username;
         $this->password = $password;
+    }
+
+    public function login() {
+
     }
 }
