@@ -1,3 +1,3 @@
-<div class="ui divider"></div>
+</div>
 </body>
 </html>
