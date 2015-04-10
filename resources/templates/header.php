@@ -9,4 +9,8 @@
 </head>
 <body>
 
+
 <div id="wrapper">
+    <div class="ui segment inverted">
+        <h3>Library Management System</h3>
+    </div>
