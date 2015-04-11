@@ -12,7 +12,7 @@ class Validator
 
     function validate($err)
     {
-        if (isset($this->errors[$err])) {
+        if (!empty($this->errors[$err])) {
             return "error";
         }
         return "";
