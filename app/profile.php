@@ -55,8 +55,8 @@ $validator = new Validator();
         Back
     </a>
     <button class="ui primary button right floated">
-        <i class="search icon"></i>
-        Search
+        <i class="save icon"></i>
+        Save
     </button>
 </div>
 <?php require_once("../resources/templates/footer.php"); ?>
