@@ -1,7 +1,4 @@
-<?php require_once("../resources/templates/header.php"); ?>
-
 <?php
-// validation logic
 include_once("../resources/Error.php");
 include_once("../resources/Validator.php");
 $validator = new Validator();
@@ -10,30 +7,33 @@ if (count($_POST) > 0) {
     if (isset($_POST['login'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
-
-
-
+        $mysqli = require("../resources/db_connection.php");
+        $query = "SELECT * FROM User WHERE Username='$username' AND Password='$password'";
+        $result = $mysqli->query($query);
+        if ($result->num_rows == 1) {
+            session_start();
+            $_SESSION['username'] = $username;
+            header("Location:search-books.php");
+        } else {
+            $validator->add(new Error("top", "Your username or password is incorrect."));
+        }
     } else if (isset($_POST['register'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirm_password'];
 
-
         if ($password != $confirmPassword) $validator->add(new Error("password", "Passwords do not match."));
         if (empty($password)) $validator->add(new Error("password", "Password is empty."));
         if (empty($username)) $validator->add(new Error("username", "Username cannot be left blank."));
 
-        $validator->showAllErrors();
-
         if ($password == $confirmPassword && $password != "") {
             $config = include("../resources/config.php");
-            $mysqli = new mysqli($config['hostname'], $config['username'], $config['password'], $config['dbname'], $config['port']);
+            $mysqli = require("../resources/db_connection.php");
             if ($mysqli->connect_error) {
                 die($mysqli->connect_error);
             } else {
                 $mysqli->query("INSERT INTO User VALUES ('$username', '$password')");
                 $mysqli->close();
-
 //                $_SESSION['username'] = $username;
 //                header("Location:search-books.php");
             }
@@ -41,7 +41,8 @@ if (count($_POST) > 0) {
     }
 }
 ?>
-
+<?php require_once("../resources/templates/header.php"); ?>
+<?php $validator->showAllErrors(); ?>
 <div class="ui tall stacked segment">
     <div class="ui two column relaxed fitted stackable grid">
         <form class="column" action="login-register.php" method="post">
@@ -104,5 +105,4 @@ if (count($_POST) > 0) {
         </form>
     </div>
 </div>
-
 <?php require_once("../resources/templates/footer.php"); ?>

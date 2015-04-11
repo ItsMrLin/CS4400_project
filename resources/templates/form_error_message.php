@@ -3,7 +3,7 @@
 ?>
 <div class="ui error message">
     <div class="header">
-        There was a problem processing your request.
+        Please fix these errors and try again.
     </div>
     <ul class="list">
         <?php
