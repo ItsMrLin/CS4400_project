@@ -1,13 +1,14 @@
 <?php
 include_once("../resources/Error.php");
+include_once("../resources/Form.php");
 include_once("../resources/Validator.php");
 include_once("../resources/User.php");
 $validator = new Validator();
 
 if (count($_POST) > 0) {
     if (isset($_POST['login'])) {
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = $_POST['l_username'];
+        $password = $_POST['l_password'];
 
         $user = new User($username, $password);
         if ($user->login()) {
@@ -23,8 +24,8 @@ if (count($_POST) > 0) {
         $confirmPassword = $_POST['confirm_password'];
 
         if ($password != $confirmPassword) $validator->add(new Error("r_password", "Passwords do not match."));
-        if (empty($password)) $validator->add(new Error("r_password", "Password cannot be left blank."));
-        if (empty($username)) $validator->add(new Error("r_username", "Username cannot be left blank."));
+        $validator->constraint("r_password", "post", "required", "Password is required.");
+        $validator->constraint("r_username", "post", "required", "Username is required.");
 
         if ($password == $confirmPassword && $password != "") {
             $mysqli = require("../resources/db_connection.php");
@@ -54,29 +55,17 @@ if (count($_POST) > 0) {
 <?php $validator->showAllErrors(); ?>
 <div class="ui tall stacked segment">
     <div class="ui two column relaxed fitted stackable grid">
-        <form class="column" action="login-register.php" method="post">
-            <h1><i class="lock icon"></i>Login</h1>
-
-            <div class="ui form segment">
-                <div class="field <?php $validator->validate("l_username"); ?>">
-                    <label>Username</label>
-
-                    <div class="ui left icon input">
-                        <input type="text" name="username" placeholder="Username">
-                        <i class="user icon"></i>
-                    </div>
-                </div>
-                <div class="field <?php $validator->validate("l_password"); ?>">
-                    <label>Password</label>
-
-                    <div class="ui left icon input">
-                        <input type="password" name="password" placeholder="Password">
-                        <i class="lock icon"></i>
-                    </div>
-                </div>
-                <button class="ui blue submit button" type="submit" name="login">Login</button>
-            </div>
-        </form>
+        <div class="column">
+            <?php
+            $form = new Form("login-register.php", "post", "", $validator);
+            $form->begin();
+            $form->html('<h1><i class="lock icon"></i>Login</h1>');
+            $form->input("l_username", "Username", "text");
+            $form->input("l_password", "Password", "password");
+            $form->button("login", "Login", "submit", "ui blue submit button");
+            $form->end();
+            ?>
+        </div>
         <div class="ui vertical divider">
             Or
         </div>
