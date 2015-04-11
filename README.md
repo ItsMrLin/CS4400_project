@@ -16,5 +16,7 @@ bower install
 
 Then open up MAMP, XAMPP, etc. and everything should work.
 
-**Note: You might need to change the config options for the database, which I've put in `resources/config.php`. Make sure you
+**Note 1: You might need to change the config options for the database, which I've put in `resources/config.php`. Make sure you
 don't commit `config.php` to git, because it can screw everyone's custom server configurations.**
+
+Note 2: There seems to be a weird visual glitch in Google Chrome. For demoing, let's just use Firefox.
