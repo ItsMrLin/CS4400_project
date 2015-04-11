@@ -50,7 +50,7 @@ $validator = new Validator();
             </select>
         </div>
     </form>
-    <a href="login-register.php" class="ui left labeled icon button">
+    <a href="search-books.php" class="ui left labeled icon button">
         <i class="left arrow icon"></i>
         Back
     </a>
