@@ -1,12 +1,12 @@
-<?php require_once("../resources/templates/header.php"); ?>
-
 <?php
-/*if (!isset($_SESSION['username'])) {
-header("Location:login-register.php");
-exit;
-}*/
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location:login-register.php");
+    exit;
+}
 ?>
 
+<?php require_once("../resources/templates/header.php"); ?>
 <div class="ui tall stacked segment">
     <h1>Search Books</h1>
 
@@ -33,5 +33,4 @@ exit;
         Search
     </button>
 </div>
-
 <?php require_once("../resources/templates/footer.php"); ?>

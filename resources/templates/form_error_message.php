@@ -8,7 +8,9 @@
     <ul class="list">
         <?php
         foreach ($this->errors as $error) {
-            echo "<li>" . $error->getMessage() . "</li>";
+            if ($error->getMessage() != "") {
+                echo "<li>" . $error->getMessage() . "</li>";
+            }
         }
         ?>
     </ul>
