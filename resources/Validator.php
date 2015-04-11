@@ -19,12 +19,6 @@ class Validator
 
     function showAllErrors()
     {
-        $errors = $this->errors;
         require("templates/form_error_message.php");
-
-//        if (isset($this->errors[$er])) {
-//            $error_message = require_once("templates/form_error_message.php");
-//            echo $error_message;
-//        }
     }
 }
