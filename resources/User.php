@@ -5,15 +5,14 @@ class User
     protected $username = "";
     protected $password = "";
 
-    function User($username = "", $password = "")
+    function User($username, $password)
     {
-        if (isset($username) && isset($password)) {
+        if (!empty($username) && !empty($password)) {
             $this->username = $username;
             $this->password = $password;
         } else {
-            session_start();
-            $this->username = $_SESSION['username'];
-            $this->password = $_SESSION['password'];
+            $this->username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
+            $this->password = isset($_SESSION['password']) ? $_SESSION['password'] : "";
         }
     }
 
@@ -24,7 +23,6 @@ class User
         $result = $mysqli->query($query);
 
         if ($result->num_rows == 1) {
-            session_start();
             $_SESSION['username'] = $this->username;
             $_SESSION['password'] = $this->password;
             return true;
@@ -43,6 +41,6 @@ class User
 
     public function loggedIn()
     {
-        return (isset($this->username) && isset($this->password)) ? true : false;
+        return (!empty($this->username) && !empty($this->password)) ? true : false;
     }
 }

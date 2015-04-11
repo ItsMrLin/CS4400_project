@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once("../resources/Error.php");
 include_once("../resources/Validator.php");
 include_once("../resources/User.php");
