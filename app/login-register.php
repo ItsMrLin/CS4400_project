@@ -1,6 +1,7 @@
 <?php
 include_once("../resources/Error.php");
 include_once("../resources/Validator.php");
+include_once("../resources/User.php");
 $validator = new Validator();
 
 if (count($_POST) > 0) {
@@ -8,12 +9,8 @@ if (count($_POST) > 0) {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $mysqli = require("../resources/db_connection.php");
-        $query = "SELECT * FROM User WHERE Username='$username' AND Password='$password'";
-        $result = $mysqli->query($query);
-        if ($result->num_rows == 1) {
-            session_start();
-            $_SESSION['username'] = $username;
+        $user = new User($username, $password);
+        if ($user->login()) {
             header("Location:search-books.php");
         } else {
             $validator->add(new Error("top", "Your username or password is incorrect."));
