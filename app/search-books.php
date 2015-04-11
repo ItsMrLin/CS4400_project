@@ -1,11 +1,11 @@
-<?php
-if (!isset($_SESSION['username'])) {
-    header("Location:login-register.php");
-    exit;
-}
-?>
-
 <?php require_once("../resources/templates/header.php"); ?>
+
+<?php
+/*if (!isset($_SESSION['username'])) {
+header("Location:login-register.php");
+exit;
+}*/
+?>
 
 <div class="ui tall stacked segment">
     <h1>Search Books</h1>

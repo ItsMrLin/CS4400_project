@@ -1,14 +1,29 @@
+<?php require_once("../resources/templates/header.php"); ?>
+
 <?php
-if (isset($_SESSION['username'])) {
-    header("Location:search-books.php");
-    exit;
-} else if (count($_POST) > 0) {
+// validation logic
+include_once("../resources/Error.php");
+include_once("../resources/Validator.php");
+$validator = new Validator();
+
+if (count($_POST) > 0) {
     if (isset($_POST['login'])) {
-        echo "login is not implemented yet.";
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+
+
     } else if (isset($_POST['register'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirm_password'];
+
+
+        if ($password != $confirmPassword) $validator->add(new Error("password", "Passwords do not match."));
+        if (empty($password)) $validator->add(new Error("password", "Password is empty."));
+        if (empty($username)) $validator->add(new Error("username", "Username cannot be left blank."));
+
+        $validator->showAllErrors();
 
         if ($password == $confirmPassword && $password != "") {
             $config = include("../resources/config.php");
@@ -18,16 +33,14 @@ if (isset($_SESSION['username'])) {
             } else {
                 $mysqli->query("INSERT INTO User VALUES ('$username', '$password')");
                 $mysqli->close();
-                header("Location:search-books.php");
+
+//                $_SESSION['username'] = $username;
+//                header("Location:search-books.php");
             }
-        } else {
-            echo "passwords do not match.";
         }
     }
 }
 ?>
-
-<?php require_once("../resources/templates/header.php"); ?>
 
 <div class="ui tall stacked segment">
     <div class="ui two column relaxed fitted stackable grid">
@@ -35,11 +48,11 @@ if (isset($_SESSION['username'])) {
             <h1><i class="lock icon"></i>Login</h1>
 
             <div class="ui form segment">
-                <div class="field">
+                <div class="field <?php $validator->validate("username"); ?>">
                     <label>Username</label>
 
                     <div class="ui left icon input">
-                        <input type="text" name="username" placeholder="Username">
+                        <input type="text" name="username" placeholder="Username" required="required">
                         <i class="user icon"></i>
                     </div>
                 </div>
@@ -47,7 +60,7 @@ if (isset($_SESSION['username'])) {
                     <label>Password</label>
 
                     <div class="ui left icon input">
-                        <input type="password" name="password" placeholder="Password">
+                        <input type="password" name="password" placeholder="Password" required="required">
                         <i class="lock icon"></i>
                     </div>
                 </div>
@@ -61,36 +74,33 @@ if (isset($_SESSION['username'])) {
             <h1><i class="write icon"></i>Register</h1>
 
             <div class="ui form segment">
-                <div class="field">
+                <div class="field <?php $validator->validate("username"); ?>">
                     <label>Username</label>
 
                     <div class="ui left icon input">
-                        <input type="text" name="username" placeholder="Username">
+                        <input type="text" name="username" placeholder="Username" required="required">
                         <i class="user icon"></i>
                     </div>
                 </div>
-                <div class="field">
+                <div class="field <?php $validator->validate("password"); ?>">
                     <label>Password</label>
 
                     <div class="ui left icon input">
-                        <input type="password" name="password" placeholder="Password">
+                        <input type="password" name="password" placeholder="Password" required="required">
                         <i class="lock icon"></i>
                     </div>
                 </div>
-                <div class="field">
+                <div class="field <?php $validator->validate("password"); ?>">
                     <label>Confirm Password</label>
 
                     <div class="ui left icon input">
-                        <input type="password" name="confirm_password" placeholder="Confirm Password">
+                        <input type="password" name="confirm_password" placeholder="Confirm Password"
+                               required="required">
                         <i class="lock icon"></i>
                     </div>
                 </div>
                 <button class="ui green submit button" type="submit" name="register">Register</button>
             </div>
-            <!--<div class="huge green ui labeled icon button">
-                <i class="write icon"></i>
-                Create an Account
-            </div>-->
         </form>
     </div>
 </div>
