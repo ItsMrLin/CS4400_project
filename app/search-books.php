@@ -1,9 +1,20 @@
 <?php
+include_once("../resources/User.php");
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location:login-register.php");
     exit;
 }
+
+$user = new User();
+
+if ($user->loggedIn()) {
+
+} else {
+    header("Location:login-register.php");
+    exit;
+}
+
 ?>
 
 <?php require_once("../resources/templates/header.php"); ?>
