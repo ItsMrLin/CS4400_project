@@ -27,15 +27,24 @@ if (count($_POST) > 0) {
         if (empty($username)) $validator->add(new Error("r_username", "Username cannot be left blank."));
 
         if ($password == $confirmPassword && $password != "") {
-            $config = include("../resources/config.php");
             $mysqli = require("../resources/db_connection.php");
             if ($mysqli->connect_error) {
                 die($mysqli->connect_error);
             } else {
-                $mysqli->query("INSERT INTO User VALUES ('$username', '$password')");
+                $result = $mysqli->query("SELECT * FROM User WHERE Username='$username'");
+                if ($result->num_rows > 0) {
+                    $validator->add(new Error("r_username", "The username <b>$username</b> has already been taken."));
+                } else {
+                    $mysqli->query("INSERT INTO User VALUES ('$username', '$password')");
+                    $user = new User($username, $password);
+                    if ($user->login()) {
+                        header("Location:profile.php");
+                        exit();
+                    } else {
+                        $validator->add(new Error("error", "There was a problem during registration."));
+                    }
+                }
                 $mysqli->close();
-//                $_SESSION['username'] = $username;
-//                header("Location:search-books.php");
             }
         }
     }

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $('.dropdown')
-        .dropdown({
-            transition: 'drop'
-        });
+        .dropdown();
+    $('.ui.checkbox')
+        .checkbox();
 });

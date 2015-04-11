@@ -4,6 +4,8 @@ $user = new User('', '');
 if (count($_GET) > 0) {
     if (isset($_GET['logout'])) {
         $user->logout();
+    } else if (isset($_GET['editProfile'])) {
+        header("Location:profile.php");
     }
 }
 ?>
@@ -23,7 +25,7 @@ if (count($_GET) > 0) {
         <h3>Library Management System</h3>
         <?php if ($user->loggedIn()) { ?>
             <div class="ui buttons">
-                <div class="ui button">Edit Profile</div>
+                <a href="?editProfile" class="ui button">Edit Profile</a>
                 <div class="or"></div>
                 <a href="?logout" class="ui teal button">Sign out</a>
             </div>
