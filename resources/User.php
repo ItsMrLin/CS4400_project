@@ -7,6 +7,10 @@ class User
 
     function User($username, $password)
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (!empty($username) && !empty($password)) {
             $this->username = $username;
             $this->password = $password;
@@ -37,10 +41,20 @@ class User
         $this->username = "";
         $this->password = "";
         session_destroy();
+        header("Location:login-register.php");
+        exit();
     }
 
     public function loggedIn()
     {
         return (!empty($this->username) && !empty($this->password)) ? true : false;
+    }
+
+    public function getUsername() {
+        return $this->username;
+    }
+
+    public function getPassword() {
+        return $this->password;
     }
 }

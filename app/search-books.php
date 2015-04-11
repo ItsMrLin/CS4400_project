@@ -1,16 +1,8 @@
 <?php
 include_once("../resources/User.php");
-session_start();
-
-$user = new User('','');
-if ($user->loggedIn()) {
-
-} else {
-    header("Location:login-register.php");
-}
+$user = new User('', '');
+require("../resources/templates/header.php");
 ?>
-
-<?php require_once("../resources/templates/header.php"); ?>
 <div class="ui tall stacked segment">
     <h1>Search Books</h1>
 
