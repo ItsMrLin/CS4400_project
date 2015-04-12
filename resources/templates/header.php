@@ -26,13 +26,28 @@ if (count($_GET) > 0) {
 <body>
 
 <div id="wrapper">
-    <div class="ui segment inverted">
+   <!-- <div class="ui segment inverted">
         <h3>Library Management System</h3>
-        <?php if ($user->loggedIn()) { ?>
+        <?php /*if ($user->loggedIn()) { */?>
             <div class="ui buttons">
                 <a href="?editProfile" class="ui button">Edit Profile</a>
                 <div class="or"></div>
                 <a href="?logout" class="ui teal button">Sign out</a>
             </div>
-        <?php } ?>
+        <?php /*} */?>
+    </div>-->
+    <div class="ui menu">
+        <div class="header item">
+            Library Management System
+        </div>
+        <div class="right menu">
+            <?php if ($user->loggedIn()) { ?>
+                <div class="header item">
+                    Welcome,
+                    <?php  echo (new User('', ''))->getUsername(); ?>
+                </div>
+                <a class="item" href="?editProfile">Edit Profile</a>
+                <a class="item" href="?logout">Sign out</a>
+            <?php }?>
+        </div>
     </div>
