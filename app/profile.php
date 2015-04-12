@@ -11,12 +11,12 @@ $validator->constraint("gender", "post", "required", "Gender is required.");
 $validator->constraint("email", "post", "required", "Email is required.");
 $validator->constraint("address", "post", "required", "Address is required.");
 if (isset($_POST['is_faculty'])) {
-    $validator->constraint("associated_department", "post", "required", "As faculty, you need to pick an Associated Department");
+    $validator->constraint("associated_department", "post", "required", "As faculty, you need to pick an Associated Department.");
 } else {
     unset($_POST['associated_department']);
 }
 
-$form = new Form("profile.php", "post");
+$form = new Form("form", "profile.php", "post");
 $form->setValidator($validator);
 $form->onSubmit(function ($f, $mysqli) use ($validator) {
     if ($validator->valid()) {

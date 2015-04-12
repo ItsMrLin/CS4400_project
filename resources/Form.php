@@ -8,9 +8,11 @@ class Form
     protected $method;
     protected $validator;
     protected $submitMethod;
+    protected $name;
 
-    function Form($action, $method)
+    function Form($name, $action, $method)
     {
+        $this->name = $name;
         $this->action = $action;
         $this->method = $method;
     }
@@ -19,7 +21,7 @@ class Form
     {
         $this->validator = &$validator;
         if (count($_POST) > 0) {
-            if (isset($_POST['submit'])) {
+            if (isset($_POST[$this->name])) {
                 $this->validator->enabled(true);
             }
         }
@@ -28,6 +30,11 @@ class Form
     function onSubmit($method)
     {
         $this->submitMethod = $method;
+        if (count($_POST) > 0) {
+            if (isset($_POST[$this->name]) && $this->validator->valid()) {
+                $this->submit();
+            }
+        }
     }
 
     public function submit()
@@ -40,11 +47,11 @@ class Form
 
     public function contents($method)
     {
-        if (count($_POST) > 0) {
-            if (isset($_POST['submit'])) {
+        /*if (count($_POST) > 0) {
+            if (isset($_POST[$this->name])) {
                 $this->submit();
             }
-        }
+        }*/
 
         $mysqli = require("db_connection.php");
         $this->begin();
@@ -101,7 +108,7 @@ class Form
 
     public function submitButton($label, $classes)
     {
-        $this->button("submit", $label, "submit", $classes);
+        $this->button($this->name, $label, "submit", $classes);
     }
 
     public function link($label, $href, $classes)

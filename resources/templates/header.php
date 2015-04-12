@@ -1,8 +1,7 @@
 <?php
-error_reporting(E_NOTICE);
 include_once("../resources/User.php");
 $user = new User('', '');
-if (!$user->loggedIn()) {
+if ((new User('', ''))->loggedIn() == false) {
     if (strpos($_SERVER['PHP_SELF'], 'login-register') == false) {
         header("Location:login-register.php");
     }

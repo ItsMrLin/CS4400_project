@@ -22,11 +22,13 @@ class User
 
     public function login()
     {
+        if (empty($this->username)) return false;
+
         $mysqli = require("db_connection.php");
         $query = "SELECT * FROM User WHERE Username='$this->username' AND Password='$this->password'";
         $result = $mysqli->query($query);
 
-        if ($result->num_rows == 1) {
+        if ($result->num_rows > 0) {
             $_SESSION['username'] = $this->username;
             $_SESSION['password'] = $this->password;
             return true;
