@@ -4,6 +4,7 @@ include_once("Error.php");
 class Validator
 {
     protected $errors = array();
+    protected $enabled = false;
 
     function add(Error &$error)
     {
@@ -12,6 +13,8 @@ class Validator
 
     function validate($err)
     {
+        if (!$this->enabled) return "";
+
         if (!empty($this->errors[$err])) {
             return "error";
         }
@@ -41,6 +44,7 @@ class Validator
 
     function showAllErrors()
     {
+        if (!$this->enabled) return;
         require("templates/form_error_message.php");
     }
 
@@ -53,5 +57,10 @@ class Validator
             }
         }
         return true;
+    }
+
+    function enabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 }
