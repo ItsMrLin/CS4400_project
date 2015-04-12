@@ -36,9 +36,14 @@ $registerForm->onSubmit(function ($form, $mysqli) use ($registerValidator) {
     }
 
     $username = $form['r_username'];
+    $password = $form['r_password'];
+
     $result = $mysqli->query("SELECT * FROM User WHERE Username='$username'");
     if ($result->num_rows > 0) {
         $registerValidator->add(new Error("r_username", "Username <strong>$username</strong> is already taken."));
+    } else {
+        $mysqli->query("INSERT INTO User VALUES ('$username', '$password')");
+        header("Location:profile.php");
     }
 });
 
@@ -49,7 +54,6 @@ if (count($_POST) > 0) {
         $registerForm->submit();
     }
 }
-
 ?>
 <?php require_once("../resources/templates/header.php"); ?>
 <?php

@@ -25,13 +25,13 @@ class Validator
     {
         switch ($method) {
             case "post":
-                $expression = $_POST[$name];
+                $expression = isset($_POST[$name]) ? $_POST[$name] : '';
                 break;
             case "get":
-                $expression = $_GET[$name];
+                $expression = isset($_GET[$name]) ? $_GET[$name] : '';
                 break;
             default:
-                $expression = $_POST[$name];
+                $expression = isset($_POST[$name]) ? $_POST[$name] : '';
                 break;
         }
 

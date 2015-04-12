@@ -5,22 +5,16 @@ include_once("../resources/Validator.php");
 include_once("../resources/User.php");
 $validator = new Validator();
 
-if (count($_POST) > 0) {
-    $validator->constraint("first_name", "post", "required", "First name is required.");
-    $validator->constraint("last_name", "post", "required", "Last name is required.");
-    $validator->constraint("dob", "post", "required", "DOB is required.");
-    $validator->constraint("gender", "post", "required", "Gender is required.");
-    $validator->constraint("email", "post", "required", "Email is required.");
-    $validator->constraint("address", "post", "required", "Address is required.");
-
-    if ($validator->valid()) {
-
-    }
-}
+$validator->constraint("first_name", "post", "required", "First name is required.");
+$validator->constraint("last_name", "post", "required", "Last name is required.");
+$validator->constraint("dob", "post", "required", "DOB is required.");
+$validator->constraint("gender", "post", "required", "Gender is required.");
+$validator->constraint("email", "post", "required", "Email is required.");
+$validator->constraint("address", "post", "required", "Address is required.");
 
 ?>
 <?php require_once("../resources/templates/header.php"); ?>
-    <?php $validator->showAllErrors();  ?>
+    <?php $validator->showAllErrors(); ?>
     <div class="ui tall stacked segment">
         <h1>Your Profile</h1>
         <?php

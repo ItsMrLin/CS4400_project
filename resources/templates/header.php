@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_NOTICE);
 include_once("../resources/User.php");
 $user = new User('', '');
 if (count($_GET) > 0) {
