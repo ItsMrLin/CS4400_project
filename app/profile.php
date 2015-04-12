@@ -1,6 +1,6 @@
 <?php
-include_once("../resources/Error.php");
 include_once("../resources/Form.php");
+include_once("../resources/Error.php");
 include_once("../resources/Validator.php");
 include_once("../resources/User.php");
 $validator = new Validator();
@@ -12,8 +12,10 @@ if (count($_POST) > 0) {
     $validator->constraint("gender", "post", "required", "Gender is required.");
     $validator->constraint("email", "post", "required", "Email is required.");
     $validator->constraint("address", "post", "required", "Address is required.");
-} else {
 
+    if ($validator->valid()) {
+
+    }
 }
 
 ?>

@@ -35,7 +35,7 @@ class Validator
         switch ($constraint) {
             case "required":
                 $customMsg = !empty($customMsg) ? $customMsg : "$name is required.";
-                if(empty($expression)) $this->add(new Error($name, $customMsg));
+                if (empty($expression)) $this->add(new Error($name, $customMsg));
         }
     }
 
@@ -43,6 +43,15 @@ class Validator
     {
         require("templates/form_error_message.php");
     }
-}
 
-// $validator->constraint('first_name', $_POST['first_name'), 'required');
+    function valid()
+    {
+        foreach ($this->errors as $error) {
+            $error = $this->validate($error->getTitle());
+            if (!empty($error)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
