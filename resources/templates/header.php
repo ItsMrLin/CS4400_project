@@ -2,6 +2,11 @@
 error_reporting(E_NOTICE);
 include_once("../resources/User.php");
 $user = new User('', '');
+if (!$user->loggedIn()) {
+    if (strpos($_SERVER['PHP_SELF'], 'login-register') == false) {
+        header("Location:login-register.php");
+    }
+}
 if (count($_GET) > 0) {
     if (isset($_GET['logout'])) {
         $user->logout();

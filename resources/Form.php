@@ -25,7 +25,7 @@ class Form
         $this->submitMethod = $method;
     }
 
-    function submit()
+    public function submit()
     {
         $this->validator->enabled(true);
         $mysqli = require("db_connection.php");
