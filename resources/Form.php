@@ -38,6 +38,11 @@ class Form
         }
     }
 
+    public function isValid()
+    {
+        return $this->validator->valid();
+    }
+
     public function submit()
     {
         $this->validator->enabled(true);
@@ -78,7 +83,7 @@ class Form
         }
     }
 
-    private function submitted()
+    public function submitted()
     {
         return (isset($_POST[$this->name])) ? true : false;
     }

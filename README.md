@@ -41,3 +41,20 @@ Here's the cliffnotes for dealing with form stuff, though:
 
 6) If you need to get the current user, you should use the `User` class. It has convenience methods such as `login()`, `getUsername()`, `logout()`, etc.
 Tip: if you want to get the username or password for the currently logged in user, use: `(new User('', ''))->getUsername()` or `(new User('', ''))->getPassword()`.
+
+---
+
+## SQL Fixes
+
+The *Search Books* SQL code we submitted was incorrect. I changed it to this, and it works:
+
+```
+SELECT b.Title, b.Edition, b.ISBN FROM Book AS b
+ INNER JOIN Author AS a
+ ON a.ISBN=b.ISBN
+ WHERE (
+  b.ISBN LIKE '%$isbn%' AND
+  b.Title LIKE '%$title%' AND
+  a.Author LIKE '%$author%'
+ )
+```
