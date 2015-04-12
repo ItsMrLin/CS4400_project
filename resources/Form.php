@@ -1,24 +1,67 @@
 <?php
+include_once("Map.php");
+include_once("Validator.php");
 
 class Form
 {
     protected $action;
     protected $method;
-    protected $result;
+    protected $query;
     protected $validator;
+    protected $map;
+    protected $submitMethod;
 
-    function Form($action, $method, $query, &$validator)
+    function Form($action, $method)
     {
         $this->action = $action;
         $this->method = $method;
-        $this->validator = &$validator;
 
-        if (!empty($query)) {
+        /*if (count($_POST) && $validator->valid()) {
+
+            foreach ($_POST as $name => $value) {
+                $mapped = $map->get($name);
+                if ($mapped) {
+
+                } else {
+                    echo "couldn't map ". $name;
+                }
+            }
+
+        }*/
+
+        /*if (!empty($query)) {
             $mysqli = require("db_connection.php");
             $this->result = $mysqli->query($query);
         } else {
             $this->result = false;
-        }
+        }*/
+
+    }
+
+    function setValidator(Validator &$validator)
+    {
+        $this->validator = &$validator;
+    }
+
+    function setMap(Map &$map)
+    {
+        $this->map = &$map;
+    }
+
+    function onSubmit($method)
+    {
+        $this->submitMethod = $method;
+    }
+
+    function submit()
+    {
+        $mysqli = require("db_connection.php");
+        call_user_func($this->submitMethod, $_POST, $mysqli, $this->map);
+    }
+
+    function onRead()
+    {
+
     }
 
     public function begin()
@@ -29,6 +72,15 @@ class Form
     public function end()
     {
         echo '</form>';
+
+        if(count($_POST) > 0 && $this->validator->valid()) {
+            $this->submit();
+        }
+    }
+
+    public function save()
+    {
+        $mysqli = require("db_connection.php");
     }
 
     public function input($name, $label, $type)

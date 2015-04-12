@@ -3,7 +3,30 @@ include_once("../resources/Error.php");
 include_once("../resources/Form.php");
 include_once("../resources/Validator.php");
 include_once("../resources/User.php");
+include_once("../resources/Map.php");
 $validator = new Validator();
+
+$userMap = new Map();
+$userMap->link('l_username', 'Username');
+$userMap->link('l_password', 'Password');
+$userMap->link('r_username', 'Username');
+$userMap->link('r_password', 'Password');
+
+$loginForm = new Form("login-register.php", "post");
+$loginForm->setValidator($validator);
+$loginForm->setMap($userMap);
+$loginForm->onSubmit(function ($form, $mysqli) {
+    $q  = "SELECT Username, Password FROM User WHERE Username='".$form['l_username']."'";
+    $q .= "AND Password='".$form['l_password']."'";
+
+//    $result = $mysqli->query($q);
+    
+
+});
+
+$registerForm = new Form("login-register.php", "post");
+$registerForm->setValidator($validator);
+$registerForm->setMap($userMap);
 
 if (count($_POST) > 0) {
     if (isset($_POST['login'])) {
@@ -58,13 +81,12 @@ if (count($_POST) > 0) {
     <div class="ui two column relaxed fitted stackable grid">
         <div class="column">
             <?php
-            $form = new Form("login-register.php", "post", "", $validator);
-            $form->begin();
-            $form->html('<h1><i class="lock icon"></i>Login</h1>');
-            $form->input("l_username", "Username", "text");
-            $form->input("l_password", "Password", "password");
-            $form->button("login", "Login", "submit", "ui blue submit button");
-            $form->end();
+            $loginForm->begin();
+            $loginForm->html('<h1><i class="lock icon"></i>Login</h1>');
+            $loginForm->input("l_username", "Username", "text");
+            $loginForm->input("l_password", "Password", "password");
+            $loginForm->button("login", "Login", "submit", "ui blue submit button");
+            $loginForm->end();
             ?>
         </div>
         <div class="ui vertical divider">
@@ -72,14 +94,13 @@ if (count($_POST) > 0) {
         </div>
         <div class="column">
             <?php
-            $form = new Form("login-register.php", "post", "", $validator);
-            $form->begin();
-            $form->html('<h1><i class="write icon"></i>Register</h1>');
-            $form->input("r_username", "Username", "text");
-            $form->input("r_password", "Password", "password");
-            $form->input("r_confirm_password", "Confirm password", "password");
-            $form->button("register", "Register", "submit", "ui green submit button");
-            $form->end();
+            $registerForm->begin();
+            $registerForm->html('<h1><i class="write icon"></i>Register</h1>');
+            $registerForm->input("r_username", "Username", "text");
+            $registerForm->input("r_password", "Password", "password");
+            $registerForm->input("r_confirm_password", "Confirm password", "password");
+            $registerForm->button("register", "Register", "submit", "ui green submit button");
+            $registerForm->end();
             ?>
         </div>
     </div>
