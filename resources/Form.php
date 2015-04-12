@@ -18,6 +18,11 @@ class Form
     function setValidator(Validator &$validator)
     {
         $this->validator = &$validator;
+        if (count($_POST) > 0) {
+            if (isset($_POST['submit'])) {
+                $this->validator->enabled(true);
+            }
+        }
     }
 
     function onSubmit($method)
@@ -33,17 +38,32 @@ class Form
         $mysqli->close();
     }
 
-    public function begin()
+    public function contents($method)
+    {
+        if (count($_POST) > 0) {
+            if (isset($_POST['submit'])) {
+                $this->submit();
+            }
+        }
+
+        $mysqli = require("db_connection.php");
+        $this->begin();
+        $method($_POST, $mysqli);
+        $this->end();
+        $mysqli->close();
+    }
+
+    private function begin()
     {
         echo "<form class=\"ui form\" action=\"$this->action\" method=\"$this->method\">";
     }
 
-    public function end()
+    private function end()
     {
         echo '</form>';
     }
 
-    public function input($name, $label, $type)
+    public function input($name, $label, $type, $classes)
     {
         $value = "";
         if ($type != "password") {
@@ -54,16 +74,16 @@ class Form
 
         $error = $this->validator->validate($name);
 
-        echo "<div class=\"field $error\">";
+        echo "<div class=\"field $error $classes\">";
         echo "<label>$label</label>";
         echo "<input type=\"$type\" name=\"$name\" value=\"$value\">";
         echo "</div>";
     }
 
-    public function select($name, $label, $options)
+    public function select($name, $label, $options, $classes)
     {
         $error = $this->validator->validate($name);
-        echo "<div class=\"field $error\">";
+        echo "<div class=\"field $error $classes\">";
         echo "<label>$label</label>";
         echo "<select class=\"ui dropdown\" name=\"$name\">";
         foreach ($options as $value => $label) {
@@ -79,16 +99,21 @@ class Form
         echo "<button type=\"$type\" name=\"$name\" class=\"ui button $classes\">$label</button>";
     }
 
+    public function submitButton($label, $classes)
+    {
+        $this->button("submit", $label, "submit", $classes);
+    }
+
     public function link($label, $href, $classes)
     {
         echo "<a href=\"$href\" class=\"$classes\">$label</a>";
     }
 
-    public function checkbox($name, $label)
+    public function checkbox($name, $label, $classes)
     {
         $error = $this->validator->validate($name);
         $checked = !empty($_POST[$name]) ? 'checked="true"' : "";
-        echo "<div class=\"inline field $error\">";
+        echo "<div class=\"inline field $error $classes\">";
             echo "<div class=\"ui checkbox\">";
                 echo "<input type=\"checkbox\" name=\"$name\" value=\"true\" $checked>";
                 echo "<label>$label</label>";

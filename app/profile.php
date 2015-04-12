@@ -4,13 +4,15 @@ include_once("../resources/Error.php");
 include_once("../resources/Validator.php");
 include_once("../resources/User.php");
 $validator = new Validator();
-
 $validator->constraint("first_name", "post", "required", "First name is required.");
 $validator->constraint("last_name", "post", "required", "Last name is required.");
 $validator->constraint("dob", "post", "required", "DOB is required.");
 $validator->constraint("gender", "post", "required", "Gender is required.");
 $validator->constraint("email", "post", "required", "Email is required.");
 $validator->constraint("address", "post", "required", "Address is required.");
+if (isset($_POST['is_faculty'])) {
+    $validator->constraint("associated_department", "post", "required", "As faculty, you need to pick an Associated Department");
+}
 
 $form = new Form("profile.php", "post");
 $form->setValidator($validator);
@@ -35,41 +37,39 @@ $form->onSubmit(function ($f, $mysqli) use ($validator) {
     }
 });
 
-if (count($_POST) > 0) {
-    if (isset($_POST['submit'])) {
-        $form->submit();
-    }
-}
-
 ?>
 <?php require_once("../resources/templates/header.php"); ?>
 <?php $validator->showAllErrors(); ?>
     <div class="ui tall stacked segment">
         <h1>Your Profile</h1>
         <?php
-        $form->begin();
-        $form->input("first_name", "First Name", "text");
-        $form->input("last_name", "Last Name", "text");
-        $form->input("dob", "DOB", "text");
-        // @todo: populate gender from database instead of hardcoded:
-        $form->select("gender", "Gender", array(
-            "" => "Gender",
-            "1" => "Male",
-            "0" => "Female"
-        ));
-        $form->input("email", "Email", "email");
-        $form->input("address", "Address", "text");
-        $form->checkbox("is_faculty", "Faculty member");
+        $form->contents(function ($props) use ($form, $validator) {
+            $form->input("first_name", "First Name", "text", "required");
+            $form->input("last_name", "Last Name", "text", "required");
+            $form->input("dob", "DOB", "text", "required");
 
-        // @todo: populate associated department with live data later:
-        $form->select("associated_department", "Associated Department", array(
-            "" => "Associated Department",
-            "test" => "test",
-            "test2" => "test2"
-        ));
-        $form->link("Back", "search-books.php", "ui button");
-        $form->button("submit", "Save", "submit", "");
-        $form->end();
+            // @todo: populate gender from database instead of hardcoded:
+            $form->select("gender", "Gender", array(
+                "" => "Gender",
+                "1" => "Male",
+                "0" => "Female"
+            ), "required");
+            $form->input("email", "Email", "email", "required");
+            $form->input("address", "Address", "text", "required");
+            $form->checkbox("is_faculty", "Faculty member", "");
+
+            // @todo: populate associated department with live data later:
+            if (isset($props['is_faculty'])) {
+                $form->select("associated_department", "Associated Department", array(
+                    "" => "Associated Department",
+                    "test" => "test",
+                    "test2" => "test2"
+                ), "required");
+            }
+
+            $form->link("Back", "search-books.php", "ui button");
+            $form->submitButton("Save", "primary");
+        });
         ?>
     </div>
 <?php require_once("../resources/templates/footer.php"); ?>
