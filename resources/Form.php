@@ -8,6 +8,7 @@ class Form
     protected $method;
     protected $validator;
     protected $submitMethod;
+    protected $retrieveMethod;
     protected $name;
 
     function Form($name, $action, $method)
@@ -21,7 +22,7 @@ class Form
     {
         $this->validator = &$validator;
         if (count($_POST) > 0) {
-            if (isset($_POST[$this->name])) {
+            if ($this->submitted()) {
                 $this->validator->enabled(true);
             }
         }
@@ -31,7 +32,7 @@ class Form
     {
         $this->submitMethod = $method;
         if (count($_POST) > 0) {
-            if (isset($_POST[$this->name]) && $this->validator->valid()) {
+            if ($this->submitted() && $this->validator->valid()) {
                 $this->submit();
             }
         }
@@ -47,17 +48,39 @@ class Form
 
     public function contents($method)
     {
-        /*if (count($_POST) > 0) {
-            if (isset($_POST[$this->name])) {
-                $this->submit();
-            }
-        }*/
-
         $mysqli = require("db_connection.php");
+
+        if (!$this->submitted()) {
+            $_POST = $this->retrieve();
+        }
+
         $this->begin();
         $method($_POST, $mysqli);
         $this->end();
         $mysqli->close();
+    }
+
+    /**
+     * IMPORTANT: Make sure your onRetrieve anon function returns props!
+     */
+    public function onRetrieve($method)
+    {
+        $this->retrieveMethod = $method;
+    }
+
+    public function retrieve()
+    {
+        if (is_callable($this->retrieveMethod)) {
+            $mysqli = require("db_connection.php");
+            $props = call_user_func($this->retrieveMethod, $_POST, $mysqli);
+            $mysqli->close();
+            return $props;
+        }
+    }
+
+    private function submitted()
+    {
+        return (isset($_POST[$this->name])) ? true : false;
     }
 
     private function begin()

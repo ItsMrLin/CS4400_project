@@ -4,16 +4,15 @@ include_once("../resources/Error.php");
 include_once("../resources/Validator.php");
 include_once("../resources/User.php");
 $validator = new Validator();
-$validator->constraint("first_name", "post", "required", "First name is required.");
-$validator->constraint("last_name", "post", "required", "Last name is required.");
-$validator->constraint("dob", "post", "required", "DOB is required.");
-$validator->constraint("gender", "post", "required", "Gender is required.");
-$validator->constraint("email", "post", "required", "Email is required.");
-$validator->constraint("address", "post", "required", "Address is required.");
-if (isset($_POST['is_faculty'])) {
-    $validator->constraint("associated_department", "post", "required", "As faculty, you need to pick an Associated Department.");
+$validator->constraint("Name", "post", "required", "First name is required.");
+$validator->constraint("DOB", "post", "required", "DOB is required.");
+$validator->constraint("Gender", "post", "required", "Gender is required.");
+$validator->constraint("Email", "post", "required", "Email is required.");
+$validator->constraint("Address", "post", "required", "Address is required.");
+if (isset($_POST['IsFaculty'])) {
+    $validator->constraint("Dept", "post", "required", "As faculty, you need to pick an Associated Department.");
 } else {
-    unset($_POST['associated_department']);
+    unset($_POST['Dept']);
 }
 
 $form = new Form("form", "profile.php", "post");
@@ -21,13 +20,13 @@ $form->setValidator($validator);
 $form->onSubmit(function ($f, $mysqli) use ($validator) {
     if ($validator->valid()) {
         $username = (new User('',' '))->getUsername();
-        $name = $f['first_name'] . ' ' . $f['last_name'];
-        $dob = $f['dob'];
-        $gender = $f['gender'];
-        $email = $f['email'];
-        $address = $f['address'];
-        $isFaculty = isset($f['is_faculty']) ? 1 : 0;
-        $dept = isset($f['associated_department']) ? $f['associated_department'] : 0;
+        $name = $f['Name'];
+        $dob = $f['DOB'];
+        $gender = $f['Gender'];
+        $email = $f['Email'];
+        $address = $f['Address'];
+        $isFaculty = isset($f['IsFaculty']) ? 1 : 0;
+        $dept = isset($f['Dept']) ? $f['Dept'] : 0;
 
         $result = $mysqli->query("SELECT * FROM StudentFaculty WHERE Username='$username'");
         if ($result->num_rows > 0) {
@@ -39,6 +38,25 @@ $form->onSubmit(function ($f, $mysqli) use ($validator) {
         }
     }
 });
+$form->onRetrieve(function ($props, $mysqli) {
+    $username = (new User('', ''))->getUsername();
+    $result = $mysqli->query("SELECT * FROM StudentFaculty WHERE Username='$username'");
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_array(MYSQLI_ASSOC);
+        $props['Name'] = $row['Name'];
+        $props['DOB'] = $row['DOB'];
+        $props['Gender'] = $row['Gender'];
+        $props['Email'] = $row['Email'];
+        $props['Address'] = $row['Address'];
+        if (isset($props['IsFaculty'])) {
+            $props['IsFaculty'] = $row['IsFaculty'];
+        } else {
+            unset($props['Dept']);
+        }
+        $props['Dept'] = $row['Dept'];
+    }
+    return $props;
+});
 
 ?>
 <?php require_once("../resources/templates/header.php"); ?>
@@ -47,23 +65,22 @@ $form->onSubmit(function ($f, $mysqli) use ($validator) {
         <h1>Your Profile</h1>
         <?php
         $form->contents(function ($props) use ($form, $validator) {
-            $form->input("first_name", "First Name", "text", "required");
-            $form->input("last_name", "Last Name", "text", "required");
-            $form->input("dob", "DOB", "text", "required");
+            $form->input("Name", "Name", "text", "required");
+            $form->input("DOB", "DOB", "text", "required");
 
             // @todo: populate gender from database instead of hardcoded:
-            $form->select("gender", "Gender", array(
+            $form->select("Gender", "Gender", array(
                 "" => "Gender",
                 "1" => "Male",
                 "0" => "Female"
             ), "required");
-            $form->input("email", "Email", "email", "required");
-            $form->input("address", "Address", "text", "required");
-            $form->checkbox("is_faculty", "Faculty member", "");
+            $form->input("Email", "Email", "email", "required");
+            $form->input("Address", "Address", "text", "required");
+            $form->checkbox("IsFaculty", "Faculty member", "");
 
             // @todo: populate associated department with live data later:
-            if (isset($props['is_faculty'])) {
-                $form->select("associated_department", "Associated Department", array(
+            if (isset($props['IsFaculty'])) {
+                $form->select("Dept", "Associated Department", array(
                     "" => "Associated Department",
                     "test" => "test",
                     "test2" => "test2"
