@@ -88,7 +88,7 @@ $form->onRetrieve(function ($props, $mysqli) {
             }
 
             $form->link("Back", "search-books.php", "ui button");
-            $form->submitButton("Save", "primary");
+            $form->submitButton("Save", "primary right floated");
         });
         ?>
     </div>
