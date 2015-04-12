@@ -12,6 +12,8 @@ $validator->constraint("email", "post", "required", "Email is required.");
 $validator->constraint("address", "post", "required", "Address is required.");
 if (isset($_POST['is_faculty'])) {
     $validator->constraint("associated_department", "post", "required", "As faculty, you need to pick an Associated Department");
+} else {
+    unset($_POST['associated_department']);
 }
 
 $form = new Form("profile.php", "post");
@@ -25,10 +27,11 @@ $form->onSubmit(function ($f, $mysqli) use ($validator) {
         $email = $f['email'];
         $address = $f['address'];
         $isFaculty = isset($f['is_faculty']) ? 1 : 0;
+        $dept = isset($f['associated_department']) ? $f['associated_department'] : 0;
 
         $result = $mysqli->query("SELECT * FROM StudentFaculty WHERE Username='$username'");
         if ($result->num_rows > 0) {
-             $q = "UPDATE StudentFaculty SET Name='$name', DOB='$dob', Gender='$gender', Email='$email', Address='$address', IsFaculty='$isFaculty' WHERE Username='$username'";
+             $q = "UPDATE StudentFaculty SET Name='$name', DOB='$dob', Gender='$gender', Email='$email', Address='$address', IsFaculty='$isFaculty', Dept='$dept' WHERE Username='$username'";
             $mysqli->query($q);
         } else {
             $q = "INSERT INTO StudentFaculty VALUES ('$username', '$name', '$dob', '$gender', 0, '$email', '$address', '$isFaculty', 0, 0.0)";
