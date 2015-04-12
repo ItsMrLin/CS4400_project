@@ -16,18 +16,22 @@ $form = new Form("profile.php", "post");
 $form->setValidator($validator);
 $form->onSubmit(function ($f, $mysqli) use ($validator) {
     if ($validator->valid()) {
-        $user = new User('', '');
-        $username = $user->getUsername();
+        $username = (new User('',' '))->getUsername();
         $name = $f['first_name'] . ' ' . $f['last_name'];
         $dob = $f['dob'];
         $gender = $f['gender'];
         $email = $f['email'];
-        $address =$f['address'];
+        $address = $f['address'];
         $isFaculty = isset($f['is_faculty']) ? 1 : 0;
-        echo $isFaculty;
 
-        $q = "INSERT INTO StudentFaculty VALUES ('$username', '$name', '$dob', '$gender', 0, '$email', '$address', '$isFaculty', 0, 0.0)";
-        $mysqli->query($q);
+        $result = $mysqli->query("SELECT * FROM StudentFaculty WHERE Username='$username'");
+        if ($result->num_rows > 0) {
+             $q = "UPDATE StudentFaculty SET Name='$name', DOB='$dob', Gender='$gender', Email='$email', Address='$address', IsFaculty='$isFaculty' WHERE Username='$username'";
+            $mysqli->query($q);
+        } else {
+            $q = "INSERT INTO StudentFaculty VALUES ('$username', '$name', '$dob', '$gender', 0, '$email', '$address', '$isFaculty', 0, 0.0)";
+            $mysqli->query($q);
+        }
     }
 });
 
@@ -39,7 +43,7 @@ if (count($_POST) > 0) {
 
 ?>
 <?php require_once("../resources/templates/header.php"); ?>
-    <?php $validator->showAllErrors(); ?>
+<?php $validator->showAllErrors(); ?>
     <div class="ui tall stacked segment">
         <h1>Your Profile</h1>
         <?php
@@ -50,12 +54,13 @@ if (count($_POST) > 0) {
         // @todo: populate gender from database instead of hardcoded:
         $form->select("gender", "Gender", array(
             "" => "Gender",
-            "male" => "Male",
-            "female" => "Female"
+            "1" => "Male",
+            "0" => "Female"
         ));
         $form->input("email", "Email", "email");
         $form->input("address", "Address", "text");
         $form->checkbox("is_faculty", "Faculty member");
+
         // @todo: populate associated department with live data later:
         $form->select("associated_department", "Associated Department", array(
             "" => "Associated Department",
