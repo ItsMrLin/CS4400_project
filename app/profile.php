@@ -48,12 +48,13 @@ $form->onRetrieve(function ($props, $mysqli) {
         $props['Gender'] = $row['Gender'];
         $props['Email'] = $row['Email'];
         $props['Address'] = $row['Address'];
-        if (isset($props['IsFaculty'])) {
-            $props['IsFaculty'] = $row['IsFaculty'];
+        $props['IsFaculty'] = empty($row['IsFaculty']) ? "" : 1;
+        if ($props['IsFaculty'] == 1) {
+            $props['Dept'] = $row['Dept'];
         } else {
             unset($props['Dept']);
+            unset($props['IsFaculty']);
         }
-        $props['Dept'] = $row['Dept'];
     }
     return $props;
 });
