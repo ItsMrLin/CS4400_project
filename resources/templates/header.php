@@ -1,4 +1,5 @@
 <?php
+include_once("../resources/gotoPage.php");
 include_once("../resources/User.php");
 $user = new User('', '');
 if ((new User('', ''))->loggedIn() == false) {
