@@ -1,8 +1,5 @@
 <?php
-include_once("../resources/Error.php");
-include_once("../resources/Form.php");
-include_once("../resources/Validator.php");
-include_once("../resources/User.php");
+include_once("../resources/templates/base.php");
 
 $loginValidator = new Validator();
 $loginValidator->constraint("l_username", "post", "required", "Username cannot be left blank.");
@@ -69,12 +66,13 @@ $loginValidator->showAllErrors();
         </div>
         <div class="column">
             <?php
+
             $registerForm->contents(function () use ($registerForm) {
                 $registerForm->html('<h1><i class="write icon"></i>Register</h1>');
                 $registerForm->input("r_username", "Username", "text", "");
                 $registerForm->input("r_password", "Password", "password", "");
                 $registerForm->input("r_confirm_password", "Confirm password", "password", "");
-                $registerForm->submitButton("Register", "green submit");
+                $registerForm->submitButton("Register", "green");
             });
             ?>
         </div>

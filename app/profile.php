@@ -1,8 +1,6 @@
 <?php
-include_once("../resources/Form.php");
-include_once("../resources/Error.php");
-include_once("../resources/Validator.php");
-include_once("../resources/User.php");
+include_once("../resources/templates/base.php");
+
 $validator = new Validator();
 $validator->constraint("Name", "post", "required", "First name is required.");
 $validator->constraint("DOB", "post", "required", "DOB is required.");

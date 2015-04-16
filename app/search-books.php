@@ -1,8 +1,6 @@
 <?php
-include_once("../resources/Form.php");
-include_once("../resources/Error.php");
-include_once("../resources/Validator.php");
-include_once("../resources/User.php");
+include_once("../resources/templates/base.php");
+
 $user = new User('', '');
 $validator = new Validator();
 $form = new Form("searchForm", "search-books.php", "post");

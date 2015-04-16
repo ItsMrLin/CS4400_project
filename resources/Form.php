@@ -80,6 +80,8 @@ class Form
             $props = call_user_func($this->retrieveMethod, $_POST, $mysqli);
             $mysqli->close();
             return $props;
+        } else {
+            return $_POST;
         }
     }
 
