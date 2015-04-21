@@ -46,6 +46,8 @@ $validator->showAllErrors();
                     <th>Edition</th>
                     <th>ISBN</th>
                     <th>Copies</th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,9 +58,10 @@ $validator->showAllErrors();
                         <td><?php echo $row['Title']; ?></td>
                         <td><?php echo $row['Edition']; ?></td>
                         <td><?php echo $row['ISBN']; ?></td>
+                        <td>
                         <?php
                             $targetIsbn = $row['ISBN'];
-                            $bookAvailabilityQuery = "SELECT b.ISBN, b.Title, b.Edition, COUNT(bc.CopyID) AS 'Available'
+                            $copyCountQuery = "SELECT b.ISBN, b.Title, b.Edition, COUNT(bc.CopyID) AS 'Available'
                                 FROM Book AS b
                                 INNER JOIN BookCopy AS bc
                                 ON b.ISBN=bc.ISBN
@@ -66,21 +69,13 @@ $validator->showAllErrors();
                                 GROUP BY 'Available'
                             ";
 
-                            $bookAvailabilityResult = $mysqli->query($bookAvailabilityQuery);
-                            $availabilityRow = $bookAvailabilityResult->fetch_array(MYSQLI_ASSOC);
-                            $availabilityRow["Available"];
+                            $copyCountResult = $mysqli->query($copyCountQuery);
+                            $copyRow = $copyCountResult->fetch_array(MYSQLI_ASSOC);
+                            echo $copyRow["Available"];
                         ?>
-                        <td>
-                            <?php
-                                if ($availabilityRow["Available"] > 0) {
-                                ?>
-                                    <a href="book-checkout.php?isbn=<?php echo $row['ISBN'];?>"><?php echo $availabilityRow["Available"]; ?></a>
-                                <?php   
-                                } else {
-                                    echo $availabilityRow["Available"];
-                                }
-                            ?>
                         </td>
+                        <td><a href="book-hold.php?isbn=<?php echo $targetIsbn; ?>" class="ui button">Hold</a></td>
+                        <td><a href="book-checkout.php?isbn=<?php echo $targetIsbn; ?>" class="ui button">Check Out</a></td>
                     </tr>
                 <?php
                 }
