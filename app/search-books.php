@@ -94,7 +94,10 @@ $validator->showAllErrors();
         </div>
 
     <?php } } else { ?>
-        <h1>Search Books</h1>
+        <div>
+            <h1 style="display:inline-block;">Search Books</h1>
+            <a href="return-books.php" style="display:inline-block;">Return Books</a>
+        </div>   
         <?php
         $form->contents(function () use ($form) {
             $form->input("ISBN", "ISBN", "text", "");
