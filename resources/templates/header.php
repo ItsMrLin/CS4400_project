@@ -28,7 +28,7 @@ if (count($_GET) > 0) {
 
 <div id="wrapper">
     <div class="ui menu">
-        <a href="search-books.php" class="header item">
+        <a href="index.php" class="header item">
             Library Management System
         </a>
         <div class="right menu">

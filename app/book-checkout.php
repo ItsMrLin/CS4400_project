@@ -19,7 +19,7 @@
     $results = $mysqli->query($locateCopyQueryWithHold);
     $userHasHold = true;
     
-    if ($results->num_rows=0) {
+    if ($results || $results->num_rows=0) {
         // if the user has no hold on the book, check if there is a book available
         $locateCopyQueryWithoutHold = "SELECT CopyID FROM BookCopy
             WHERE ISBN = $targetIsbn AND IsCheckedOut = 0 AND IsDamaged = 0 AND IsOnHold = 0
