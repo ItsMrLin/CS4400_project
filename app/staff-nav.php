@@ -15,5 +15,5 @@ require("../resources/templates/header.php");
   <div class="item"><a href="report-damage.php">Report Damage/Lost Book</a></div>
   <div class="item"><a href="popular-book-report.php">Popular Book Report</a></div>
   <div class="item"><a href="">Popular Subject Report</a></div>
-  <div class="item"><a href="">Frequent User Report</a></div>
+  <div class="item"><a href="frequent-user-report.php">Frequent User Report</a></div>
 </div>
