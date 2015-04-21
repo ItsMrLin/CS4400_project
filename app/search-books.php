@@ -65,7 +65,7 @@ $validator->showAllErrors();
                             $copyCountQuery = "SELECT b.ISBN, b.Title, b.Edition, COUNT(bc.CopyID) AS 'Available'
                                 FROM Book AS b
                                 INNER JOIN BookCopy AS bc
-                                ON b.ISBN=bc.ISBN AND bc.IsCheckedOut=0 AND (bc.IsOnHold=0 OR (bc.IsOnHold=1 AND bc.FutureRequester='$username'))
+                                ON b.ISBN=bc.ISBN AND bc.IsCheckedOut=0 AND bc.IsDamaged=0 AND (bc.IsOnHold=0 OR (bc.IsOnHold=1 AND bc.FutureRequester='$username'))
                                 WHERE b.ISBN=$targetIsbn
                                 GROUP BY 'Available'
                             ";

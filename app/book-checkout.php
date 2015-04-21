@@ -13,22 +13,22 @@
     // check if copy is available
     // check if the user has a hold on this book
     $locateCopyQueryWithHold = "SELECT CopyID FROM BookCopy
-        WHERE ISBN = $targetIsbn AND IsCheckedOut = 0 AND IsDamaged = 0 AND IsOnHold = 1 AND FutureRequester = '$username'
+        WHERE ISBN = '$targetIsbn' AND IsCheckedOut = 0 AND IsDamaged = 0 AND IsOnHold = 1 AND FutureRequester = '$username'
         LIMIT 1;";
-    // $results = $mysqli->query("SELECT * FROM BookCopy");
     $results = $mysqli->query($locateCopyQueryWithHold);
     $userHasHold = true;
     
-    if ($results || $results->num_rows=0) {
+    if (!$results || $results->num_rows==0) {
         // if the user has no hold on the book, check if there is a book available
         $locateCopyQueryWithoutHold = "SELECT CopyID FROM BookCopy
-            WHERE ISBN = $targetIsbn AND IsCheckedOut = 0 AND IsDamaged = 0 AND IsOnHold = 0
+            WHERE ISBN = '$targetIsbn' AND IsCheckedOut = 0 AND IsDamaged = 0 AND IsOnHold = 0
             LIMIT 1;";
 
-        $results = $mysqli->query($locateCopyQueryWithHold);
+        $results = $mysqli->query($locateCopyQueryWithoutHold);
         $userHasHold = false;
     }
     
+
     if ($bookCopyRow = $results->fetch_array(MYSQLI_ASSOC)) {
         $copyId = $bookCopyRow["CopyID"];
         // update bookCopy
