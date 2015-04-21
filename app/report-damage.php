@@ -49,7 +49,7 @@ $validator->showAllErrors();
             ?>
                 <div class="ui message">
                     <div class="header">
-                        You have successfully filed a damage report. <a href="report-damage.php">File another damage report.</a>
+                        You have successfully filed a damage/lost report. <a href="report-damage.php">File another damage report.</a>
                     </div>
                 </div>
             <?php
@@ -72,7 +72,7 @@ $validator->showAllErrors();
 
     <?php } } else { ?>
         <div>
-            <h1 style="display:inline-block;">Report Damaged Books</h1>
+            <h1 style="display:inline-block;">Report Damage/Lost Books</h1>
         </div>   
         <?php
         $form->contents(function () use ($form) {

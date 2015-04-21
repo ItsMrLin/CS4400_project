@@ -18,7 +18,7 @@ $loginForm->onSubmit(function ($form) use ($loginValidator) {
     $user = new User($form['l_username'], $form['l_password']);
     if ($user->login()) {
         if ($user->isStaff() == true) {
-            gotoPage("report-damage.php");
+            gotoPage("staff-nav.php");
         } else {
             gotoPage("search-books.php");
         }

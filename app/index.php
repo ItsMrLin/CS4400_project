@@ -7,7 +7,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 if ($user->loggedIn()) {
     if ($user->isStaff() == true) {
-        gotoPage("report-damage.php");
+        gotoPage("staff-nav.php");
     } else {
         gotoPage("search-books.php");
     }
