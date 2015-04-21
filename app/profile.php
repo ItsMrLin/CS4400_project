@@ -16,6 +16,7 @@ if (isset($_POST['IsFaculty'])) {
 $form = new Form("form", "profile.php", "post");
 $form->setValidator($validator);
 $form->onSubmit(function ($f, $mysqli) use ($validator) {
+    // print_r($_POST);
     if ($validator->valid()) {
         $username = (new User('',' '))->getUsername();
         $name = $f['Name'];
