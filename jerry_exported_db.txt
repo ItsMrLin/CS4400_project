@@ -1,0 +1,387 @@
+-- phpMyAdmin SQL Dump
+-- version 4.4.1.1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost:8889
+-- Generation Time: Apr 21, 2015 at 07:52 PM
+-- Server version: 5.5.42
+-- PHP Version: 5.6.7
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `CS_4400`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Author`
+--
+
+CREATE TABLE `Author` (
+  `ISBN` varchar(13) NOT NULL,
+  `Author` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Author`
+--
+
+INSERT INTO `Author` (`ISBN`, `Author`) VALUES
+('0393911918', 'Eric Foner');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Book`
+--
+
+CREATE TABLE `Book` (
+  `Title` varchar(255) DEFAULT NULL,
+  `Cost` float NOT NULL,
+  `ISBN` varchar(13) NOT NULL,
+  `IsReserved` tinyint(1) DEFAULT '0',
+  `Edition` int(11) DEFAULT NULL,
+  `Publisher` varchar(255) DEFAULT NULL,
+  `PlaceOfPublisher` varchar(255) DEFAULT NULL,
+  `CopyRightYear` int(11) DEFAULT NULL,
+  `SubName` varchar(255) DEFAULT NULL,
+  `ShelfID` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Book`
+--
+
+INSERT INTO `Book` (`Title`, `Cost`, `ISBN`, `IsReserved`, `Edition`, `Publisher`, `PlaceOfPublisher`, `CopyRightYear`, `SubName`, `ShelfID`) VALUES
+('Give Me Liberty!: An American History', 46.67, '0393911918', 0, 2, 'W. W. Norton & Company', NULL, NULL, 'History', 1),
+('The Girl on the Train', 14.82, '1594633665', 0, 1, 'Riverhead Books', NULL, NULL, 'Novel', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `BookCopy`
+--
+
+CREATE TABLE `BookCopy` (
+  `ISBN` varchar(13) NOT NULL,
+  `CopyID` int(11) NOT NULL,
+  `IsOnHold` tinyint(1) DEFAULT '0',
+  `IsCheckedOut` tinyint(1) DEFAULT '0',
+  `IsDamaged` tinyint(1) DEFAULT '0',
+  `FutureRequester` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `BookCopy`
+--
+
+INSERT INTO `BookCopy` (`ISBN`, `CopyID`, `IsOnHold`, `IsCheckedOut`, `IsDamaged`, `FutureRequester`) VALUES
+('0393911918', 1, 0, 0, 0, NULL),
+('0393911918', 2, 0, 0, 1, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Floor`
+--
+
+CREATE TABLE `Floor` (
+  `FloorID` int(11) NOT NULL,
+  `AssistCount` int(11) NOT NULL DEFAULT '0',
+  `CopierCount` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Floor`
+--
+
+INSERT INTO `Floor` (`FloorID`, `AssistCount`, `CopierCount`) VALUES
+(1, 0, 0),
+(2, 0, 0),
+(3, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Issue`
+--
+
+CREATE TABLE `Issue` (
+  `Username` varchar(255) NOT NULL,
+  `IssueID` int(11) NOT NULL,
+  `IssueDate` date NOT NULL,
+  `ExtensionDate` date DEFAULT NULL,
+  `ReturnDate` date DEFAULT NULL,
+  `ExtensionCount` int(11) NOT NULL,
+  `ISBN` varchar(13) NOT NULL,
+  `CopyID` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Issue`
+--
+
+INSERT INTO `Issue` (`Username`, `IssueID`, `IssueDate`, `ExtensionDate`, `ReturnDate`, `ExtensionCount`, `ISBN`, `CopyID`) VALUES
+('jerry', 3, '2015-04-21', NULL, '2015-04-21', 0, '0393911918', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Keywords`
+--
+
+CREATE TABLE `Keywords` (
+  `Name` varchar(255) NOT NULL,
+  `Keywords` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Shelf`
+--
+
+CREATE TABLE `Shelf` (
+  `ShelfID` int(11) NOT NULL,
+  `AisleID` int(11) NOT NULL,
+  `FloorID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Shelf`
+--
+
+INSERT INTO `Shelf` (`ShelfID`, `AisleID`, `FloorID`) VALUES
+(1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Staff`
+--
+
+CREATE TABLE `Staff` (
+  `Username` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Staff`
+--
+
+INSERT INTO `Staff` (`Username`) VALUES
+('staff');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `StudentFaculty`
+--
+
+CREATE TABLE `StudentFaculty` (
+  `Username` varchar(255) NOT NULL,
+  `Name` varchar(255) DEFAULT NULL,
+  `DOB` date DEFAULT NULL,
+  `Gender` tinyint(1) DEFAULT NULL,
+  `IsDebarred` tinyint(1) DEFAULT '0',
+  `Email` varchar(255) DEFAULT NULL,
+  `Address` varchar(255) DEFAULT NULL,
+  `IsFaculty` tinyint(1) DEFAULT NULL,
+  `Dept` varchar(255) DEFAULT NULL,
+  `Penalty` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `StudentFaculty`
+--
+
+INSERT INTO `StudentFaculty` (`Username`, `Name`, `DOB`, `Gender`, `IsDebarred`, `Email`, `Address`, `IsFaculty`, `Dept`, `Penalty`) VALUES
+('jerry', 'Jerry Lin', '1993-12-06', 1, 0, 'zlin48@gatech.edu', '58 6th St. NE Apt. 2402', 0, '0', 46.67);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Subject`
+--
+
+CREATE TABLE `Subject` (
+  `Name` varchar(255) NOT NULL,
+  `JournalCount` int(11) NOT NULL DEFAULT '0',
+  `FloorID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Subject`
+--
+
+INSERT INTO `Subject` (`Name`, `JournalCount`, `FloorID`) VALUES
+('History', 0, 1),
+('Novel', 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `User`
+--
+
+CREATE TABLE `User` (
+  `Username` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `User`
+--
+
+INSERT INTO `User` (`Username`, `Password`) VALUES
+('jerry', 'jerry'),
+('staff', 'staff');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `Author`
+--
+ALTER TABLE `Author`
+  ADD PRIMARY KEY (`ISBN`,`Author`);
+
+--
+-- Indexes for table `Book`
+--
+ALTER TABLE `Book`
+  ADD PRIMARY KEY (`ISBN`),
+  ADD KEY `SubName` (`SubName`),
+  ADD KEY `ShelfID` (`ShelfID`);
+
+--
+-- Indexes for table `BookCopy`
+--
+ALTER TABLE `BookCopy`
+  ADD PRIMARY KEY (`ISBN`,`CopyID`),
+  ADD KEY `FutureRequester` (`FutureRequester`);
+
+--
+-- Indexes for table `Floor`
+--
+ALTER TABLE `Floor`
+  ADD PRIMARY KEY (`FloorID`);
+
+--
+-- Indexes for table `Issue`
+--
+ALTER TABLE `Issue`
+  ADD PRIMARY KEY (`IssueID`),
+  ADD KEY `ISBN` (`ISBN`,`CopyID`),
+  ADD KEY `Username` (`Username`);
+
+--
+-- Indexes for table `Keywords`
+--
+ALTER TABLE `Keywords`
+  ADD PRIMARY KEY (`Name`);
+
+--
+-- Indexes for table `Shelf`
+--
+ALTER TABLE `Shelf`
+  ADD PRIMARY KEY (`ShelfID`),
+  ADD KEY `FloorID` (`FloorID`);
+
+--
+-- Indexes for table `Staff`
+--
+ALTER TABLE `Staff`
+  ADD PRIMARY KEY (`Username`);
+
+--
+-- Indexes for table `StudentFaculty`
+--
+ALTER TABLE `StudentFaculty`
+  ADD PRIMARY KEY (`Username`);
+
+--
+-- Indexes for table `Subject`
+--
+ALTER TABLE `Subject`
+  ADD PRIMARY KEY (`Name`),
+  ADD KEY `FloorID` (`FloorID`);
+
+--
+-- Indexes for table `User`
+--
+ALTER TABLE `User`
+  ADD PRIMARY KEY (`Username`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `Issue`
+--
+ALTER TABLE `Issue`
+  MODIFY `IssueID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `Author`
+--
+ALTER TABLE `Author`
+  ADD CONSTRAINT `author_ibfk_1` FOREIGN KEY (`ISBN`) REFERENCES `Book` (`ISBN`);
+
+--
+-- Constraints for table `Book`
+--
+ALTER TABLE `Book`
+  ADD CONSTRAINT `book_ibfk_1` FOREIGN KEY (`SubName`) REFERENCES `Subject` (`Name`),
+  ADD CONSTRAINT `book_ibfk_2` FOREIGN KEY (`ShelfID`) REFERENCES `Shelf` (`ShelfID`);
+
+--
+-- Constraints for table `BookCopy`
+--
+ALTER TABLE `BookCopy`
+  ADD CONSTRAINT `bookcopy_ibfk_1` FOREIGN KEY (`ISBN`) REFERENCES `Book` (`ISBN`),
+  ADD CONSTRAINT `bookcopy_ibfk_2` FOREIGN KEY (`FutureRequester`) REFERENCES `StudentFaculty` (`Username`);
+
+--
+-- Constraints for table `Issue`
+--
+ALTER TABLE `Issue`
+  ADD CONSTRAINT `issue_ibfk_1` FOREIGN KEY (`ISBN`, `CopyID`) REFERENCES `BookCopy` (`ISBN`, `CopyID`),
+  ADD CONSTRAINT `issue_ibfk_2` FOREIGN KEY (`Username`) REFERENCES `StudentFaculty` (`Username`);
+
+--
+-- Constraints for table `Keywords`
+--
+ALTER TABLE `Keywords`
+  ADD CONSTRAINT `keywords_ibfk_1` FOREIGN KEY (`Name`) REFERENCES `Subject` (`Name`);
+
+--
+-- Constraints for table `Shelf`
+--
+ALTER TABLE `Shelf`
+  ADD CONSTRAINT `shelf_ibfk_1` FOREIGN KEY (`FloorID`) REFERENCES `Floor` (`FloorID`);
+
+--
+-- Constraints for table `Staff`
+--
+ALTER TABLE `Staff`
+  ADD CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `User` (`Username`);
+
+--
+-- Constraints for table `StudentFaculty`
+--
+ALTER TABLE `StudentFaculty`
+  ADD CONSTRAINT `studentfaculty_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `User` (`Username`);
+
+--
+-- Constraints for table `Subject`
+--
+ALTER TABLE `Subject`
+  ADD CONSTRAINT `subject_ibfk_1` FOREIGN KEY (`FloorID`) REFERENCES `Floor` (`FloorID`);
