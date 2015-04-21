@@ -17,7 +17,11 @@ $registerForm->setValidator($registerValidator);
 $loginForm->onSubmit(function ($form) use ($loginValidator) {
     $user = new User($form['l_username'], $form['l_password']);
     if ($user->login()) {
-        gotoPage("search-books.php");
+        if ($user->isStaff() == true) {
+            gotoPage("report-damage.php");
+        } else {
+            gotoPage("search-books.php");
+        }
     } else {
         $loginValidator->add(new Error("top", "Your username or password is incorrect."));
     }

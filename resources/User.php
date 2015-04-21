@@ -20,6 +20,19 @@ class User
         }
     }
 
+    public function isStaff()
+    {
+        $mysqli = require("db_connection.php");
+        $staffQuery = "SELECT * FROM Staff WHERE Username='$this->username'";
+        $result = $mysqli->query($staffQuery);
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function login()
     {
         if (empty($this->username)) return false;

@@ -6,7 +6,11 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 if ($user->loggedIn()) {
-    gotoPage("search-books.php");
+    if ($user->isStaff() == true) {
+        gotoPage("report-damage.php");
+    } else {
+        gotoPage("search-books.php");
+    }
 } else {
     gotoPage("login-register.php");
 }
