@@ -79,7 +79,7 @@ $validator->showAllErrors();
             $form->input("ISBN", "ISBN", "text", "");
             $form->input("CopyID", "Copy ID", "text", "");
             $form->input("DamageUsername", "Username", "text", "");
-            $form->link("Back", "login-register.php", "ui left icon button");
+            $form->link("Back", "staff-nav.php", "ui left icon button");
             $form->submitButton("Report Damage", "primary right floated");
         });
         ?>
