@@ -37,6 +37,15 @@ if (count($_GET) > 0) {
                     Welcome, <?php  echo (new User('', ''))->getUsername(); ?>
                     <i class="dropdown icon"></i>
                     <div class="menu">
+                        <a class="item" href="search-books.php">
+                            Search Books
+                        </a>
+                        <a class="item" href="track-book.php">
+                            Track Book Location
+                        </a>
+                        <a class="item" href="return-books.php">
+                            Return Books
+                        </a>
                         <a class="item" href="?editProfile">
                             <i class="user icon"></i>
                             Edit Profile

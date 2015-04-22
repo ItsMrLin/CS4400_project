@@ -158,6 +158,10 @@ class Form
         echo "</div>";
     }
 
+    public function divider() {
+        echo '<div class="ui divider"></div>';
+    }
+
     public function html($html)
     {
         echo $html;
