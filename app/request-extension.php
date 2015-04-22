@@ -43,7 +43,6 @@ $form->onSubmit(function ($props) use ($form, $validator, &$resultData, $user) {
 
             if ($r['ExtensionCount'] <= $extensionLimit) {
                 if ($extensionDate == "") {
-                    echo "HERE";
                     $query = "UPDATE Issue
                               SET ExtensionDate=CURRENT_DATE(), ExtensionCount=ExtensionCount+1, ReturnDate=DATE_ADD(CURDATE(), INTERVAL 14 DAY)
                               WHERE Username='$username'
@@ -51,7 +50,6 @@ $form->onSubmit(function ($props) use ($form, $validator, &$resultData, $user) {
                               AND ReturnDate>CURRENT_DATE()";
                     $mysqli->query($query);
                 } else {
-                    echo "ELSEWHERE";
                     $query = "UPDATE Issue
                           SET ExtensionCount=ExtensionCount+1, ReturnDate=(DATE_ADD(ExtensionDate,INTERVAL 14 DAY))
                           WHERE Username='$username'
