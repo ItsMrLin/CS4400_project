@@ -77,8 +77,9 @@ if ($form->submitted()) {
     }
 } else {
     $form->contents(function () use ($form) {
-        $form->select("Month", "Month" , 
-            array("1" => "Jan", "2"=>"Feb", "3"=>"Mar", "4"=>"Apr", "5"=>"May", "6"=>"Jun", "7"=>"Jul", "8"=>"Aug", "9"=>"Sep", "10"=>"Oct", "11"=>"Nov", "12"=>"Dec"),
+        $myArray = array("1" => "Jan", "2"=>"Feb", "3"=>"Mar", "4"=>"Apr", "5"=>"May", "6"=>"Jun", "7"=>"Jul", "8"=>"Aug", "9"=>"Sep", "10"=>"Oct", "11"=>"Nov", "12"=>"Dec");
+        $form->select("Month", "Month" ,
+        $myArray, 
          "");
     ?>
         <a href="staff-nav.php" class="ui button">Back</a>
