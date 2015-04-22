@@ -37,7 +37,7 @@ $validator->showAllErrors();
             // return book
             $updateIssueQuery = "UPDATE Issue
                 SET ReturnDate = CURDATE()
-                WHERE Username = '$username' AND ISBN = $isbn AND CopyID = $copyId AND ReturnDate IS NULL";
+                WHERE Username = '$username' AND ISBN = $isbn AND CopyID = $copyId AND ReturnDate >= CURDATE()";
             $results = $mysqli->query($updateIssueQuery);
 
             if ($mysqli->affected_rows > 0) {

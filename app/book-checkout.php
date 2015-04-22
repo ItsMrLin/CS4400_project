@@ -35,12 +35,25 @@
         $updateBookCopyQuery = "UPDATE BookCopy
             SET IsOnHold = 0, IsCheckedOut = 1, FutureRequester = NULL
             WHERE ISBN = $targetIsbn AND CopyID = $copyId";
-        $createIssue = "INSERT INTO Issue
-            (Username, IssueDate, ISBN, CopyID)
-            VALUES
-            ('$username', CURDATE(), '$targetIsbn', $copyId)";
+        $createOrUpdateIssue = "";
+        if ($userHasHold) {
+            // update issue if there's a hold already
+            "UPDATE BookCopy
+            SET IsOnHold = 1, IsCheckedOut = 0, FutureRequester = '$username'
+            WHERE ISBN = $targetIsbn AND CopyID = $copyId";
+
+            // ReturnDate > CURDATE() along with $userHasHold ensure the book is on hold, rather than presviouly checked-out and returned book 
+            $createOrUpdateIssue = "UPDATE Issue
+                SET IssueDate = CURDATE(), ReturnDate = DATE_ADD(CURDATE(),INTERVAL 14 DAY)
+                WHERE ISBN = '$targetIsbn' AND CopyID = $copyId AND ReturnDate > CURDATE()";
+        } else {
+            $createOrUpdateIssue = "INSERT INTO Issue
+                (Username, IssueDate, ReturnDate, ISBN, CopyID)
+                VALUES
+                ('$username', CURDATE(), DATE_ADD(CURDATE(),INTERVAL 14 DAY), '$targetIsbn', $copyId)";
+        }
         $mysqli->query($updateBookCopyQuery);
-        $mysqli->query($createIssue);
+        $mysqli->query($createOrUpdateIssue);
     ?>
             <div class="ui message">
                 <div class="header">
