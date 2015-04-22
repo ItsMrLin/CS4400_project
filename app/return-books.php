@@ -34,6 +34,19 @@ $validator->showAllErrors();
         ?>
 
         <?php if ($mysqli->affected_rows > 0) {
+            $checkIfOnFutureHold = "SELECT FutureRequester FROM BookCopy
+                WHERE ISBN = '$isbn' AND CopyID = $copyId";
+            $results = $mysqli->query($checkIfOnFutureHold);
+            $futureRequestRow = $results->fetch_array(MYSQLI_ASSOC);
+            $futureRequester = $futureRequestRow["FutureRequester"];
+            // if there is a future requester, put the book on hold automatically
+            if ($futureRequester != NULL) {
+                $updateBookCopyQuery = "UPDATE BookCopy
+                    SET IsOnHold = 1
+                    WHERE ISBN = '$isbn' AND CopyID = $copyId";
+                $mysqli->query($updateBookCopyQuery);
+            }
+
             // return book
             $updateIssueQuery = "UPDATE Issue
                 SET ReturnDate = CURDATE()

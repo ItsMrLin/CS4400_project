@@ -51,7 +51,7 @@
             ?>
                 <div class="ui message">
                     <div class="header">
-                        Sorry, the book is not available for hold. <a href="search-books.php">Find another book.</a>
+                        Sorry, the book is not available for hold. <a href="search-books.php">Find another book</a>, or do you want to put a <a href="future-hold.php?isbn=<?php echo $targetIsbn; ?>">future hold</a> on this book?
                     </div>
                 </div>
                 <a href="search-books.php" class="ui button">Back</a>
