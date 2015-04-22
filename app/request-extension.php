@@ -45,20 +45,20 @@ $form->onSubmit(function ($props) use ($form, $validator, &$resultData, $user) {
                 if ($extensionDate == "") {
                     echo "HERE";
                     $query = "UPDATE Issue
-                          SET ExtensionDate=CURDATE(), ExtensionCount=ExtensionCount+1, ReturnDate=(CURDATE()+14)
-                          WHERE Username='$username'
-                          AND ISBN=$isbn
-                          AND ReturnDate>CURDATE()";
+                              SET ExtensionDate=CURRENT_DATE(), ExtensionCount=ExtensionCount+1, ReturnDate=DATE_ADD(CURDATE(), INTERVAL 14 DAY)
+                              WHERE Username='$username'
+                              AND ISBN=$isbn
+                              AND ReturnDate>CURRENT_DATE()";
+                    $mysqli->query($query);
                 } else {
                     echo "ELSEWHERE";
                     $query = "UPDATE Issue
-                          SET ExtensionCount=ExtensionCount+1, ReturnDate=(ExtensionDate+14)
+                          SET ExtensionCount=ExtensionCount+1, ReturnDate=(DATE_ADD(ExtensionDate,INTERVAL 14 DAY))
                           WHERE Username='$username'
                           AND ISBN=$isbn
-                          AND ReturnDate>CURDATE()";
+                          AND ReturnDate>CURRENT_DATE()";
+                    $mysqli->query($query);
                 }
-
-                $mysqli->query($query);
             } else {
                 $validator->add(new Error('1', "You can't request an extesnion for this book more than $extensionLimit times."));
             }
