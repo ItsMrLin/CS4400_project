@@ -46,6 +46,9 @@ if (count($_GET) > 0) {
                         <a class="item" href="return-books.php">
                             Return Books
                         </a>
+                        <a class="item" href="request-extension.php">
+                            Request Book Extension
+                        </a>
                         <a class="item" href="?editProfile">
                             <i class="user icon"></i>
                             Edit Profile
