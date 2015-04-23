@@ -35,7 +35,8 @@ $validator->showAllErrors();
                   b.ISBN LIKE '%$isbn%' AND
                   b.Title LIKE '%$title%' AND
                   a.Author LIKE '%$author%'
-                 )";
+                 ) AND b.IsReserved=0
+                    GROUP BY b.ISBN";
         $results = $mysqli->query($query);
         ?>
 
@@ -66,13 +67,17 @@ $validator->showAllErrors();
                                 FROM Book AS b
                                 INNER JOIN BookCopy AS bc
                                 ON b.ISBN=bc.ISBN AND bc.IsCheckedOut=0 AND bc.IsDamaged=0 AND (bc.IsOnHold=0 OR (bc.IsOnHold=1 AND bc.FutureRequester='$username'))
-                                WHERE b.ISBN=$targetIsbn
+                                WHERE b.ISBN='$targetIsbn'
                                 GROUP BY 'Available'
                             ";
 
                             $copyCountResult = $mysqli->query($copyCountQuery);
                             $copyRow = $copyCountResult->fetch_array(MYSQLI_ASSOC);
-                            echo $copyRow["Available"];
+                            if (empty($copyRow["Available"])) {
+                                echo 0;
+                            } else {
+                                echo $copyRow["Available"];
+                            }
                         ?>
                         </td>
                         <td><a href="book-hold.php?isbn=<?php echo $targetIsbn; ?>" class="ui button">Hold</a></td>

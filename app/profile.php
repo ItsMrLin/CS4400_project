@@ -4,7 +4,8 @@ include_once("../resources/templates/base.php");
 $validator = new Validator();
 $validator->constraint("Name", "post", "required", "First name is required.");
 $validator->constraint("DOB", "post", "required", "DOB is required.");
-$validator->constraint("Gender", "post", "required", "Gender is required.");
+// female = 0 will violate the constrain
+// $validator->constraint("Gender", "post", "required", "Gender is required.");
 $validator->constraint("Email", "post", "required", "Email is required.");
 $validator->constraint("Address", "post", "required", "Address is required.");
 if (isset($_POST['IsFaculty'])) {

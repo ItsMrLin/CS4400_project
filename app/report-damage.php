@@ -45,6 +45,14 @@ $validator->showAllErrors();
 
             $results = $mysqli->query($updateUserPaneltyQuery);
 
+
+            // charge user
+            $updateUserDebarredQuery = "UPDATE StudentFaculty
+                SET IsDebarred = 1
+                WHERE Penalty >= 100";
+
+            $mysqli->query($updateUserDebarredQuery);
+
             if ($mysqli->affected_rows > 0) {
             ?>
                 <div class="ui message">

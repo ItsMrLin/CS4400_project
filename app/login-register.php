@@ -20,7 +20,11 @@ $loginForm->onSubmit(function ($form) use ($loginValidator) {
         if ($user->isStaff() == true) {
             gotoPage("staff-nav.php");
         } else {
-            gotoPage("search-books.php");
+            if ($user->isDebarred() == true) {
+                $loginValidator->add(new Error("top", "Your account has been debarred. Please contact the library staff."));
+            } else {
+                gotoPage("search-books.php");
+            }
         }
     } else {
         $loginValidator->add(new Error("top", "Your username or password is incorrect."));

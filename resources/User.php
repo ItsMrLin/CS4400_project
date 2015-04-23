@@ -33,6 +33,19 @@ class User
         }
     }
 
+    public function isDebarred()
+    {
+        $mysqli = require("db_connection.php");
+        $staffQuery = "SELECT * FROM StudentFaculty WHERE Username='$this->username' AND IsDebarred=1";
+        $result = $mysqli->query($staffQuery);
+
+        if ($result->num_rows > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function login()
     {
         if (empty($this->username)) return false;
