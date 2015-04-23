@@ -57,7 +57,7 @@
     ?>
             <div class="ui message">
                 <div class="header">
-                    The book has been successfully checked out. <a href="search-books.php">Find another book.</a>
+                    The book has been successfully checked out copy <?php echo $copyId?>. <a href="search-books.php">Find another book.</a>
                 </div>
             </div>
     <?php
